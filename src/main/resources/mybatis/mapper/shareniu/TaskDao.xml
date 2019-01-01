@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shareniu.flowable.dao.TaskDao">
+    <select id="queryByUserIdListPage" parameterType="java.lang.String" resultType="com.shareniu.flowable.entity.TaskData">
+    SELECT
+	t.TASK_ID_ taskId,
+	t.USER_ID_ taskAssigin,
+	a.CREATE_TIME_ startTime,
+	a.PROC_INST_ID_ processId,
+	a.NAME_ taskName,
+	a.SUSPENSION_STATE_ state,
+	a.`PRIORITY_` AS priority
+FROM
+	(
+		SELECT
+			art.ID_ AS TASK_ID_,
+			art.ASSIGNEE_ AS USER_ID_
+		FROM
+			act_ru_task art
+		WHERE
+			art.ID_ IS NOT NULL
+		AND art.ASSIGNEE_ IS NOT NULL
+		AND art.ASSIGNEE_ = #{userId}
+		UNION
+			SELECT
+				TASK_ID_,
+				USER_ID_
+			FROM
+				ACT_RU_IDENTITYLINK I,
+				ACT_RU_TASK T
+			WHERE
+				TASK_ID_ IS NOT NULL
+			AND USER_ID_ IS NOT NULL
+			AND I.TASK_ID_ = T.ID_
+			AND T.ASSIGNEE_ IS NULL
+			AND TYPE_ = 'candidate'
+	) t,
+	act_ru_task a
+WHERE
+	t.TASK_ID_ = a.ID_
+AND t.USER_ID_ = #{userId}
+
+  </select>
+      <select id="queryByUserIdPage" parameterType="java.lang.String" resultType="com.shareniu.flowable.entity.TaskAPIData">
+    
+select * from (
+
+SELECT
+		taskId,
+		startTime,
+		endTime,
+		processInstanceId,
+		taskName,
+		priority,
+		processDefName,
+		startUserId,
+		applyTime,
+		stopTime,
+		processCategory,
+		processKey,
+		processInstanceName,
+		handerId
+		FROM
+		(
+		SELECT
+		aht.ID_ AS taskId,
+		aht.START_TIME_ AS startTime,
+		aht.END_TIME_ AS endTime,
+		aht.PROC_INST_ID_ AS processInstanceId,
+		aht.NAME_ AS taskName,
+		aht.PRIORITY_ AS priority,
+		arp.NAME_ AS processDefName,
+		ahp.START_USER_ID_ AS startUserId,
+		ahp.START_TIME_ AS applyTime,
+		ahp.END_TIME_ AS stopTime,
+		arp.CATEGORY_ as processCategory,
+		arp.KEY_ as processKey,
+		ahp.NAME_ as processInstanceName,
+		aht.ASSIGNEE_ as handerId
+		FROM
+		act_hi_taskinst aht
+		LEFT JOIN act_re_procdef arp ON aht.PROC_DEF_ID_ = arp.ID_
+		LEFT JOIN act_hi_procinst ahp ON ahp.PROC_INST_ID_ = aht.PROC_INST_ID_
+		and aht.END_TIME_ is not null
+		) AS totalProcessInstance
+		)t
+		WHERE handerId=#{userId}
+
+  </select>
+</mapper>

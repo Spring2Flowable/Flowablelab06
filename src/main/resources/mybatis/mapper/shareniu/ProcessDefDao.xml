@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shareniu.flowable.dao.ProcessDefDao">
+	<!--查询分页查询所有的流程-->
+	<select id="queryPageAllProcessDefPage" resultType="com.shareniu.flowable.entity.ProcessDefEntity" parameterType="com.shareniu.flowable.util.Parametermap">
+	
+	SELECT
+	* 
+FROM
+	(
+	SELECT
+		arp.KEY_ AS defKey,
+		arp.NAME_ AS processDefName,
+		a2.name_ AS processCategoryName,
+		a2.code_id AS processCategory,
+		arp.ID_  as processId
+	FROM
+		ACT_RE_PROCDEF arp
+		LEFT JOIN act_process_type a2 ON arp.CATEGORY_ = a2.code_id 
+		AND a2.state_ = 0 
+	
+	ORDER BY
+		arp.VERSION_ DESC 
+	) a
+	where 1=1
+		<if test="processDefName !=null and processDefName !=''">
+			and processDefName LIKE concat(concat('%',#{processDefName,jdbcType=VARCHAR}),'%')
+		</if>
+
+		<if test="category != null and category != ''">
+			and processCategory = #{category ,jdbcType=VARCHAR}
+		</if>
+
+	</select>
+
+</mapper>
