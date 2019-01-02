@@ -25,12 +25,12 @@
   }, 
   
    {
-    "name" : "shareniu",
+    "name" : "Custom attribute",
     "properties" : [ {
-      "id" : "shareniu",
+      "id" : "customAttribute",
       "type" : "String",
-      "title" : "自定义属性",
-      "value" : "shareniu",
+      "title" : "Custom attribute",
+      "value" : "",
       "description" : "Unique identifier of the element.",
       "popular" : true
     } ]

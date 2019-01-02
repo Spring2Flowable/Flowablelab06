@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS act_process_type;
+﻿DROP TABLE IF EXISTS act_process_type;
 CREATE TABLE `act_process_type` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `code_id` varchar(10) NOT NULL COMMENT '类别id',
@@ -14,7 +14,7 @@ delete from act_process_type;
 INSERT into act_process_type(code_id,name_,state_) VALUES('leave','请假流程',0);
 INSERT into act_process_type(code_id,name_,state_) VALUES('hr','人事流程',0);
 
-
+INSERT into ACT_ID_USER(ID_,PWD_) VALUES ('admin','admin');
 INSERT into ACT_ID_USER(ID_,PWD_) VALUES ('zhangsan','test');
 INSERT into ACT_ID_USER(ID_,PWD_) VALUES ('lisi','test');
 INSERT into ACT_ID_USER(ID_,PWD_) VALUES ('wangwu','test');

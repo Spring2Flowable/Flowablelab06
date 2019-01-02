@@ -11,8 +11,8 @@ http://www.springframework.org/schema/beans/spring-beans.xsd">
         </value>
         </property>
         <property name="username">
-            <value>yeyalin</value>
+            <value>root</value>
         </property>
-        <property name="password" value="yeyalin" />
+        <property name="password" value="root" />
 </bean>
 </beans>
